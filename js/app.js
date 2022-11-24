@@ -15,13 +15,13 @@ const getData = () => {
         const musicTitle = musicInfo.title;
         const musicAlbum = musicInfo.title_short;
         const artistName = musicInfo.artist.name;
-        console.log(artistName);
         createList(musicTitle, musicAlbum);
         // console.log(musicTitle, musicAlbum);
-        getLyrics(musicAlbum, musicTitle);
+        getLyrics(artistName, musicTitle);
       }
-      console.log(Data);
+      console.log(fixedData);
     });
+  return fixedData;
 };
 
 // Create Element Function
@@ -36,15 +36,25 @@ const createList = (title, album) => {
         </p>
       </div>
       <div class="col-md-3 text-md-right text-center">
-        <button class="btn btn-success">Get Lyrics</button>
+        <button class="btn btn-success" id="get-lyrics" onclick="getClick()">Get Lyrics</button>
       </div>
     </div>`;
 };
 
-const getLyrics = (album, title) => {
-  fetch(`https://api.lyrics.ovh/v1/${album}/${title}`)
+// Show Lyrics
+const getLyrics = (artist, title) => {
+  fetch(
+    `https://private-anon-f47abfbea8-lyricsovh.apiary-mock.com/v1/${artist}/${title}`
+  )
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
     });
+  console.log(artist, title);
+};
+
+document.getElementById("get-lyrics");
+const getClick = () => {
+  const musicId = fixedData.id;
+  console.log(musicId);
 };
