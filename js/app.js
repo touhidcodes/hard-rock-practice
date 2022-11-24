@@ -15,17 +15,16 @@ const getData = () => {
         const musicTitle = musicInfo.title;
         const musicAlbum = musicInfo.title_short;
         const artistName = musicInfo.artist.name;
-        createList(musicTitle, musicAlbum);
+        createList(musicTitle, musicAlbum, musicInfo);
         // console.log(musicTitle, musicAlbum);
         getLyrics(artistName, musicTitle);
       }
-      console.log(fixedData);
+      // console.log(fixedData);
     });
-  return fixedData;
 };
 
 // Create Element Function
-const createList = (title, album) => {
+const createList = (title, album, song) => {
   const musicList = document.getElementById("new-element");
   musicList.innerHTML += `
     <div class="single-result row align-items-center my-3 p-3">
@@ -36,7 +35,7 @@ const createList = (title, album) => {
         </p>
       </div>
       <div class="col-md-3 text-md-right text-center">
-        <button class="btn btn-success" id="get-lyrics" onclick="getClick()">Get Lyrics</button>
+        <button class="btn btn-success" id="get-lyrics" onclick="getLyrics('${song.artist.name}','${song.title}')">Get Lyrics</button>
       </div>
     </div>`;
 };
@@ -48,13 +47,11 @@ const getLyrics = (artist, title) => {
   )
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      displayLyrics(data.lyrics);
     });
-  console.log(artist, title);
 };
 
-document.getElementById("get-lyrics");
-const getClick = () => {
-  const musicId = fixedData.id;
-  console.log(musicId);
+const displayLyrics = (lyrics) => {
+  const lyricsDiv = document.getElementById("lyrics");
+  lyricsDiv.innerText = lyrics;
 };
