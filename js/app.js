@@ -5,24 +5,28 @@ const getData = () => {
     .then((res) => res.json())
     .then((Data) => {
       const data = Data.data;
-      fixedData = data.slice(0, 9);
+      fixedData = data.slice(0, 10);
+      const musicList = document.getElementById("new-element");
+      musicList.innerHTML = "";
 
       // Loop Data and Get properties
       for (let i = 0; i < fixedData.length; i++) {
         const musicInfo = fixedData[i];
         const musicTitle = musicInfo.title;
         const musicAlbum = musicInfo.title_short;
+        const artistName = musicInfo.artist.name;
+        console.log(artistName);
         createList(musicTitle, musicAlbum);
         // console.log(musicTitle, musicAlbum);
+        getLyrics(musicAlbum, musicTitle);
       }
-      //console.log(Data);
+      console.log(Data);
     });
 };
-const musicList = document.getElementById("new-element");
-musicList.innerHTML = ``;
 
 // Create Element Function
 const createList = (title, album) => {
+  const musicList = document.getElementById("new-element");
   musicList.innerHTML += `
     <div class="single-result row align-items-center my-3 p-3">
       <div class="col-md-9">
@@ -35,4 +39,12 @@ const createList = (title, album) => {
         <button class="btn btn-success">Get Lyrics</button>
       </div>
     </div>`;
+};
+
+const getLyrics = (album, title) => {
+  fetch(`https://api.lyrics.ovh/v1/${album}/${title}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    });
 };
